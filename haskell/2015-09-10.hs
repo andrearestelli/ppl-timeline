@@ -1,8 +1,8 @@
 module HS20150910 where
 
 -- Define a class called Blup, for a generic type T having two parameters x and y, providing two operations
--- called f isto and fosto. f isto takes a value belonging to T and returns a value of type M aybe x, while fosto
--- takes a value belonging to T and returns a value of type M aybe y.
+-- called fisto and fosto. fisto takes a value belonging to T and returns a value of type M aybe x, while fosto
+-- takes a value belonging to T and returns a value of type Maybe y.
 
 class Blup a where
     fisto :: (a b c) -> Maybe b
@@ -11,7 +11,7 @@ class Blup a where
 -- Define the sum type Blargh with two parameters of types a and b. It has three data constructor: either Bip
 -- with two parameters of types respectively a and b, or Bop with only one parameter of type a, or Bup with no
 -- parameters.
--- Make Blargh an instance of class Blup, where f isto is used to access to data of type a, and fosto to
+-- Make Blargh an instance of class Blup, where fisto is used to access to data of type a, and fosto to
 -- data of type b.
 
 data Blargh a b = Bip a b | Bop a | Bup deriving (Show, Eq)
@@ -39,7 +39,7 @@ instance Blup Blarf where
 
 -- Define a function smap that takes an infinite list L of Int, a function f from Int to Int, an operation OP
 -- over Int, and a threshold T. smap performs a map of f on L, while keeping an accumulator K (with
--- starting value 0), which is updated at each step as oldAccumulatorV alue OP f(currentElementOfL).
+-- starting value 0), which is updated at each step as oldAccumulatorValue OP f(currentElementOfL).
 -- smap stops when the value of K reaches T and returns a list of all the computed values of the map.
 -- e.g. smap (^2) (+) [1,2..] 100 is the list [1,4,9,16,25,36,49].
 
