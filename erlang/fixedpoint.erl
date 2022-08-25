@@ -1,5 +1,5 @@
 -module(fixedpoint).
--export([fix/2, applyf/1, main_loop/2]).
+-export([fix/2, applyf/2, test/1, main_loop/2]).
 
 % The fixed-point of a function f and a starting value x is the value v = fk(x), with k > 0, such that fk(x) = fk+1(x). We want to 
 % implement a fixed-point code using two communicating actors:
@@ -10,24 +10,32 @@
 % implement the fixed-point.
 
 fix(F, SV) ->
-    Applier = spawn(?MODULE, applyf, [SV]),
+    Applier = spawn(?MODULE, applyf, [self(), SV]),
+    Applier ! {F},
     main_loop(Applier, F).
 
 main_loop(Applier, F) ->
-    Applier ! {self(), F},
     receive
-        {P, V} -> if
-                        V =:= continue -> main_loop(P, F);
-                        true -> V
-                  end
+        {continue} -> 
+            Applier ! {F},
+            main_loop(Applier, F);
+        {ended, RES} -> RES
     end.
 
-applyf(V) ->
+applyf(Pid, V) ->
     receive
-        {Pid, F} ->  RES = F(V),
+        {F} ->  RES = F(V),
                 if
-                    RES =:= V -> Pid ! {self(), RES};
-                    true -> Pid ! {self(), continue},
-                            applyf(RES)
+                    RES =:= V -> Pid ! {ended, RES};
+                    true -> Pid ! {continue},
+                            applyf(Pid, RES)
                 end
     end.
+
+test(SV) -> 
+    fix(fun(X) -> 
+            if
+                X >= 5 -> 5;
+                true -> X + 1
+            end
+        end, SV).
