@@ -23,7 +23,7 @@ The exercises cover topics about
     - General issues on Communication and Synchronization
     - Variants and usages
     
-The language used are:
-- [**Scheme**](https://www.scheme.com/tspl4/)
+The languages used are:
+- [**Racket**](https://racket-lang.org/)
 - [**Haskell**](https://www.haskell.org/)
 - [**Erlang**](https://www.erlang.org/)
